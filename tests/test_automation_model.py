@@ -364,6 +364,17 @@ class TestStaticHelpers:
         result = AutomationModel._invert_monotone(x_grid, y_grid, 100.0)
         assert result == 3.0, f"Expected 3.0 for y above range, got {result}"
 
+    def test_log_integral_first_interval_is_value_interpolated(self):
+        """A log-cumulative integral starting at -inf interpolates its value, and inverts back."""
+        x_grid = np.array([0.0, 1.0, 2.0])
+        y_grid = np.log(np.array([0.0, 4.0, 8.0]))  # B(x) = 4x
+
+        for x in [1e-6, 0.25, 0.5, 0.999]:
+            y = AutomationModel._interp(x_grid, y_grid, x)
+            assert_scalar_close(y, np.log(4.0 * x), rtol=1e-12, msg=f"Interp at {x} failed")
+            assert_scalar_close(AutomationModel._invert_monotone(x_grid, y_grid, y), x, rtol=1e-12,
+                                msg=f"Inverse at {x} failed")
+
 
 # =============================================================================
 # Optimal CES Coding Labor Tests

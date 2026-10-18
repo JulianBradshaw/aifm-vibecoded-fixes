@@ -285,7 +285,15 @@ class AutomationModel:
         t = np.clip(t, 0.0, 1.0)
 
         # Linear interpolation
-        result = (1.0 - t) * y_grid[j] + t * y_grid[j + 1]
+        with np.errstate(invalid='ignore', divide='ignore'):
+            result = (1.0 - t) * y_grid[j] + t * y_grid[j + 1]
+            # Cumulative integrals start at zero (log = -inf). Across that first
+            # interval interpolate the value, not the log: (1-t)*(-inf) + t*y1
+            # is -inf for every t < 1, which drops the AI term entirely.
+            starts_at_zero = np.isneginf(y_grid[j]) & np.isfinite(y_grid[j + 1])
+            result = np.where(starts_at_zero, y_grid[j + 1] + np.log(t), result)
+        result = np.where(t == 0, y_grid[j], result)
+        result = np.where(t == 1, y_grid[j + 1], result)
 
         # Return scalar if input was scalar
         return float(result[0]) if is_scalar else result
@@ -355,8 +363,13 @@ class AutomationModel:
         result = np.where(below_min, x_grid[0], result)
         result = np.where(above_max, x_grid[-1], result)
 
-        # Handle non-finite brackets: if y0=-inf and y is finite, use hi
-        result = np.where(y0_is_ninf & y_is_finite & np.isfinite(y1), x_grid[hi], result)
+        # If y0 = -inf (an integral starting at zero), invert the value-space
+        # interpolation that _interp uses on that interval instead of snapping
+        # to the far end of it.
+        first_interval = y0_is_ninf & y_is_finite & np.isfinite(y1)
+        with np.errstate(invalid='ignore', over='ignore'):
+            first_result = x_grid[lo] + (x_grid[hi] - x_grid[lo]) * np.exp(np.minimum(y_input - y1, 0.0))
+        result = np.where(first_interval, first_result, result)
         # Handle non-finite brackets: if y1=+inf and y is finite, use lo
         result = np.where(y1_is_pinf & y_is_finite & np.isfinite(y0), x_grid[lo], result)
 
@@ -408,6 +421,12 @@ class AutomationModel:
             # and, for asymptotes near 1, log E_aut(i) vary fastest there).
             v_split = max(1e-2, tail_eps)
             v_body = 1.0 - np.linspace(0.0, 1.0 - v_split, M)
+            # Geometric in i across the first uniform cell: E_aut(i) falls steeply
+            # towards i = 0 (logistic schedule), so one linear cell there
+            # misstates the first AI tasks' costs.
+            i_first = 1.0 - v_body[1]
+            i_head = np.geomspace(1e-12, i_first, max(32, M // 16), endpoint=False)
+            v_body = np.concatenate([[1.0], 1.0 - i_head, v_body[1:]])
             if tail_eps < v_split:
                 v_tail = np.geomspace(v_split, tail_eps, max(64, M // 4))[1:]
                 v_grid = np.concatenate([v_body, v_tail])
@@ -591,6 +610,9 @@ class AutomationModel:
 
             # Convert to linear space
             L_arr = np.exp(log_L)
+            # Giving every task to humans is always feasible, so the optimum is
+            # never below human-only labor; a shortfall is discretisation error.
+            L_arr = np.maximum(L_arr, H_arr)
 
             # Handle H_zero case (must be done after exp to avoid -inf issues)
             L_arr[H_zero] = 0.0
