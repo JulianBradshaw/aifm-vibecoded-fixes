@@ -454,6 +454,10 @@ def integrate_progress(
     def ode_func_bounded(t, y):
         """ODE function with bounds checking to prevent extreme values"""
         try:
+            # solve_ivp owns y (on the first call it is the solver's own state
+            # vector). Clamp a copy, so a clamp changes this derivative only
+            # and never overwrites the solver's state without integrating.
+            y = np.array(y, dtype=float, copy=True)
             # Prevent logE from becoming extremely large
             if y[0] > cfg.PROGRESS_ODE_CLAMP_MAX:
                 logger.warning(f"logE {y[0]} too large at time {t}, clamping")
