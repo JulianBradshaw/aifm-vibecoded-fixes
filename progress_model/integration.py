@@ -625,7 +625,18 @@ def integrate_progress(
         time_span = max(time_range) - min(time_range)
         num_points = max(2, int(np.ceil(time_span / cfg.DENSE_OUTPUT_STEP_SIZE)) + 1)
         times = np.linspace(min(time_range), max(time_range), num_points)
-        solution_values = sol.sol(times)
+        if sol is None:
+            raise RuntimeError("every integration method raised")
+        if not sol.success:
+            # Every method failed. sol.sol is only valid on [t0, sol.t[-1]]; evaluating it
+            # beyond the failure point extrapolates the last step's polynomial over the
+            # rest of the range (garbage, e.g. logE ~ 1e35). Hold the last valid state.
+            logger.error(f"All integration methods failed ({sol.message}); holding the state "
+                         f"after t={sol.t[-1]:.6f} instead of extrapolating")
+            _t_lo, _t_hi = min(sol.t[0], sol.t[-1]), max(sol.t[0], sol.t[-1])
+            solution_values = sol.sol(np.clip(times, _t_lo, _t_hi))
+        else:
+            solution_values = sol.sol(times)
         logE_values = solution_values[0]
         research_stock_values = solution_values[1]
 
