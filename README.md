@@ -3,7 +3,7 @@
 > [!WARNING]
 > **Mostly unverified fixes.** This repository is a copy of
 > [AI-Futures-Project/aifm-public](https://github.com/AI-Futures-Project/aifm-public)
-> with bug fixes written by Claude, along with GPT-6 Astra. I (Julian Bradshaw)
+> with bug fixes written by Claude Fable 5.1 and Opus 5.5, along with GPT-6 Astra. I (Julian Bradshaw)
 > have only verified one of these fixes: the λ adjustment of the automation
 > efficiency slope η ([aifm-public#1](https://github.com/AI-Futures-Project/aifm-public/pull/1),
 > bug 5 in [BUGS.md](BUGS.md)).
