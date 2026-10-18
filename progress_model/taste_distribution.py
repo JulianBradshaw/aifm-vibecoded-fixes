@@ -521,7 +521,9 @@ class TasteDistribution:
         # Using trapezoidal rule
         dz = z_fine[1] - z_fine[0]
         # Cumulative sum from right: tail_integral[i] = ∫_{z_fine[i]}^∞ integrand(z) dz
-        tail_integral_fine = np.cumsum(integrand_values[::-1])[::-1] * dz
+        # Trapezoidal tail integral: tail[i] = sum_{j>=i} 0.5*(f_j + f_{j+1})*dz
+        seg = 0.5 * (integrand_values[:-1] + integrand_values[1:]) * dz
+        tail_integral_fine = np.append(np.cumsum(seg[::-1])[::-1], 0.0)
 
         # Now for each floor value in our grid, compute mean_with_floor
         grid_means = np.zeros(n_points)

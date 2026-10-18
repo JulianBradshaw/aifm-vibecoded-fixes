@@ -60,12 +60,12 @@
     "sos_mode": false,
     "sos_start_milestone": "AC"
   },
-  "aa_time": 2027.7859226501778,
-  "ai2027_sc_time": 2028.4045940235926,
+  "aa_time": 2027.7864385532996,
+  "ai2027_sc_time": 2028.4049726837197,
   "progress_at_aa": 37.75241747123405,
-  "final_progress": 80.07346961870655,
+  "final_progress": 80.07337689304474,
   "anchor_progress_rate": 1.6185086535267872,
-  "sc_sw_multiplier": 2.6960060452539336,
+  "sc_sw_multiplier": 2.693085728762894,
   "initial_progress": null,
   "horizon_uses_shifted_form": true
 }
