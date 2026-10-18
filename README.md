@@ -1,12 +1,12 @@
 # AI Futures Model (with bug fixes)
 
 > [!WARNING]
-> **Unverified fixes.** This repository is a copy of
+> **Mostly unverified fixes.** This repository is a copy of
 > [AI-Futures-Project/aifm-public](https://github.com/AI-Futures-Project/aifm-public)
-> with bug fixes written by an AI coding assistant (Claude). I (Julian Bradshaw)
-> have not verified these fixes, and I don't fully understand all of them.
-> Treat them as proposals to check, not as corrections endorsed by me or by the
-> AI Futures Project.
+> with bug fixes written by Claude, along with GPT-6 Astra. I (Julian Bradshaw)
+> have only verified one of these fixes: the λ adjustment of the automation
+> efficiency slope η ([aifm-public#1](https://github.com/AI-Futures-Project/aifm-public/pull/1),
+> bug 5 in [BUGS.md](BUGS.md)).
 
 This fork changes no model structure or parameter values; it only fixes
 mathematical, numerical and code bugs. [BUGS.md](BUGS.md) lists each bug,
