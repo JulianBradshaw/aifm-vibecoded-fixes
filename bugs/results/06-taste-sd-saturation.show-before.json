@@ -1,0 +1,92 @@
+{
+ "brendan-08-16-26|revenue": {
+  "AC": 2028.3790266579804,
+  "AI2027-SC": 2028.9389270037123,
+  "AIR-25x": 2029.0276096264954,
+  "AIR-5x": 2028.5612126001397,
+  "SAR-level-experiment-selection-skill": 2028.9088676396732,
+  "SIAR-level-experiment-selection-skill": 2029.8840971422455,
+  "STRAT-AI": 2029.8840971422455,
+  "TED-AI": 2029.5568653525445
+ },
+ "brendan-08-16-26|time-horizon": {
+  "AC": 2029.8339613673854,
+  "AI2027-SC": 2030.5022277629123,
+  "AIR-25x": 2030.63445437615,
+  "AIR-5x": 2030.0215994325797,
+  "SAR-level-experiment-selection-skill": 2030.5194051175588,
+  "SIAR-level-experiment-selection-skill": 2031.8302832568293,
+  "STRAT-AI": 2031.8302832568293,
+  "TED-AI": 2031.3945776364094
+ },
+ "brendan-08-16-26|uplift-solved": {
+  "AC": 2028.0284742621866,
+  "AI2027-SC": 2028.5937206123062,
+  "AIR-25x": 2028.6783512318866,
+  "AIR-5x": 2028.219499090063,
+  "SAR-level-experiment-selection-skill": 2028.54576738077,
+  "SIAR-level-experiment-selection-skill": 2029.4459046690474,
+  "STRAT-AI": 2029.4459046690474,
+  "TED-AI": 2029.1484126695727
+ },
+ "daniel-08-16-26|revenue": {
+  "AC": 2028.1498052451009,
+  "AI2027-SC": 2028.7632235377669,
+  "AIR-25x": 2028.9231409927495,
+  "AIR-5x": 2028.415493808071,
+  "SAR-level-experiment-selection-skill": 2028.7533708942726,
+  "SIAR-level-experiment-selection-skill": 2029.6101738388415,
+  "STRAT-AI": 2029.6101738388415,
+  "TED-AI": 2029.1107441339761
+ },
+ "daniel-08-16-26|time-horizon": {
+  "AC": 2028.3879938706975,
+  "AI2027-SC": 2029.0000777914674,
+  "AIR-25x": 2029.1659137199192,
+  "AIR-5x": 2028.6484153149308,
+  "SAR-level-experiment-selection-skill": 2029.0005040306569,
+  "SIAR-level-experiment-selection-skill": 2029.9099828844332,
+  "STRAT-AI": 2029.9099828844332,
+  "TED-AI": 2029.3783500496731
+ },
+ "daniel-08-16-26|uplift-solved": {
+  "AC": 2027.7875202209434,
+  "AI2027-SC": 2028.4080500670061,
+  "AIR-25x": 2028.5615331480594,
+  "AIR-5x": 2028.0606230591095,
+  "SAR-level-experiment-selection-skill": 2028.3737362341426,
+  "SIAR-level-experiment-selection-skill": 2029.170765494601,
+  "STRAT-AI": 2029.170765494601,
+  "TED-AI": 2028.7201238003977
+ },
+ "eli-08-16-26|revenue": {
+  "AC": 2029.4805271972855,
+  "AI2027-SC": 2030.1719424451844,
+  "AIR-25x": 2030.4882270034675,
+  "AIR-5x": 2029.7176867931219,
+  "SAR-level-experiment-selection-skill": 2030.3143240461156,
+  "SIAR-level-experiment-selection-skill": 2032.444767933407,
+  "STRAT-AI": 2032.444767933407,
+  "TED-AI": 2031.6776698227789
+ },
+ "eli-08-16-26|time-horizon": {
+  "AC": 2029.8183824392634,
+  "AI2027-SC": 2030.5394061213826,
+  "AIR-25x": 2030.8782727601647,
+  "AIR-5x": 2030.0597585257808,
+  "SAR-level-experiment-selection-skill": 2030.7027796351101,
+  "SIAR-level-experiment-selection-skill": 2032.9422694311872,
+  "STRAT-AI": 2032.9422694311872,
+  "TED-AI": 2032.1377243781146
+ },
+ "eli-08-16-26|uplift-solved": {
+  "AC": 2028.4119344907617,
+  "AI2027-SC": 2029.0216956667803,
+  "AIR-25x": 2029.2648313907625,
+  "AIR-5x": 2028.6427351823343,
+  "SAR-level-experiment-selection-skill": 2029.0906807143963,
+  "SIAR-level-experiment-selection-skill": 2030.8007870071278,
+  "STRAT-AI": 2030.8007870071278,
+  "TED-AI": 2030.173825858231
+ }
+}

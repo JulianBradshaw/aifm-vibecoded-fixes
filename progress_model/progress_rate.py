@@ -246,6 +246,23 @@ def compute_ai_research_taste(cumulative_progress: float, params: Parameters) ->
     )
 
 
+def compute_ai_research_taste_sd(cumulative_progress, params: Parameters):
+    """
+    AI research taste in SD units: the schedule's own coordinate,
+    slope * (progress - progress_at_aa) + anchor_sd, clamped like the taste.
+
+    Use this instead of get_sd_of_taste(compute_ai_research_taste(...)). Near the
+    taste limit the SD -> taste transform saturates to the limit in float64, and
+    inverting it returns inf.
+    """
+    progress = np.asarray(cumulative_progress, dtype=float)
+    progress = np.where(np.isfinite(progress), progress, 0.0)
+    sd = (params.ai_research_taste_slope * (progress - params.progress_at_aa)
+          + params.ai_research_taste_at_coding_automation_anchor_sd)
+    sd = np.minimum(sd, cfg.AI_RESEARCH_TASTE_MAX_SD)
+    return float(sd) if sd.ndim == 0 else sd
+
+
 def compute_aggregate_research_taste(ai_research_taste, taste_distribution: TasteDistribution):
     """
     Compute aggregate research taste using a taste distribution with a clip-and-keep floor.

@@ -61,6 +61,7 @@ from .progress_rate import (
     compute_overall_progress_rate,
     compute_automation_fraction,
     compute_ai_research_taste,
+    compute_ai_research_taste_sd,
     compute_aggregate_research_taste,
     progress_rate_at_time,
 )
@@ -2064,9 +2065,7 @@ class ProgressModel:
         try:
             from scipy.optimize import brentq
             def g(p):
-                sd = float(np.atleast_1d(self.taste_distribution.get_sd_of_taste(
-                    compute_ai_research_taste(np.atleast_1d(p), self.params)))[0])
-                return (sd if np.isfinite(sd) else np.sign(sd) * 1e300) - target_sd
+                return compute_ai_research_taste_sd(float(p), self.params) - target_sd
             if g(p_lo) <= 0.0 <= g(p_hi):
                 return float(brentq(g, p_lo, p_hi, xtol=1e-10))
         except Exception as e:
@@ -2100,8 +2099,7 @@ class ProgressModel:
             # Get the SD level at AC time. AC is defined by progress == progress_at_aa and
             # taste is a function of progress alone, so evaluate it there exactly rather
             # than log-interpolating the SD series in time.
-            sd_at_ac = float(np.atleast_1d(self.taste_distribution.get_sd_of_taste(
-                compute_ai_research_taste(np.atleast_1d(float(self.results['sc_progress_level'])), self.params)))[0])
+            sd_at_ac = compute_ai_research_taste_sd(float(self.results['sc_progress_level']), self.params)
 
         # Determine baseline SD for TED-AI calculation
         # If SAR exp selection would happen before AC, use SD at AC; otherwise use the top researcher's SD

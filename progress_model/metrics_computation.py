@@ -21,6 +21,7 @@ from .progress_rate import (
     compute_overall_progress_rate,
     compute_automation_fraction,
     compute_ai_research_taste,
+    compute_ai_research_taste_sd,
     compute_aggregate_research_taste,
     progress_rate_at_time,
 )
@@ -188,10 +189,9 @@ def compute_metrics_loop(
 
     # Get SD and quantile for each taste value (vectorized)
     _t0 = time.perf_counter()
-    # get_sd_of_taste and get_quantile_of_taste support array inputs
-    ai_research_taste_sd = taste_distribution.get_sd_of_taste(ai_research_taste)
-    # Replace non-finite values with 0.0
-    ai_research_taste_sd = np.where(np.isfinite(ai_research_taste_sd), ai_research_taste_sd, 0.0)
+    # Read the SD off the schedule rather than inverting the taste: near the taste
+    # limit get_sd_of_taste returns inf, which used to be replaced by 0 (the median).
+    ai_research_taste_sd = compute_ai_research_taste_sd(progress_values, params)
     _dt_taste_get_sd = time.perf_counter() - _t0
 
     _t0 = time.perf_counter()
