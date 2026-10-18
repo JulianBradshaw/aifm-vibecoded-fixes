@@ -13,6 +13,10 @@ mathematical, numerical and code bugs. [BUGS.md](BUGS.md) lists each bug,
 explains the worst ones and shows how much each fix moves the forecasts (under a
 day for the default presets). Each fix is its own commit.
 
+**Run it in your browser:** [julianbradshaw.github.io/aifm-vibecoded-fixes](https://julianbradshaw.github.io/aifm-vibecoded-fixes/)
+runs the fixed and the original model side by side, with the presets, AC
+anchors and the settings where the fixes matter ([web/](web/README.md)).
+
 The upstream model and website run [aifuturesmodel.com](https://www.aifuturesmodel.com/),
 an interactive forecast of AI timelines and takeoff speeds. The rest of this
 README is upstream's and applies unchanged.

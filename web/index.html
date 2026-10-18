@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Futures Model, Bug-Fixed</title>
+<meta name="description" content="Run the AI Futures Model with its bug fixes in your browser, side by side with the original model.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <h1>AI Futures Model, bug-fixed</h1>
+  <p class="lede">The <a href="https://github.com/AI-Futures-Project/aifm-public">AI Futures Model</a> with the fixes from <a href="https://github.com/JulianBradshaw/aifm-vibecoded-fixes">aifm-vibecoded-fixes</a>, running entirely in your browser next to the original. Blue is the fixed model and orange the original. At the presets they agree to within a day; move a slider or pick an example to see where the fixes matter.</p>
+</header>
+<p class="warning"><strong>Mostly unverified fixes.</strong> The fixes were written by Claude, along with GPT-6 Astra. Julian Bradshaw has verified only one of them (<a href="https://github.com/AI-Futures-Project/aifm-public/pull/1">aifm-public#1</a>). See <a href="https://github.com/JulianBradshaw/aifm-vibecoded-fixes/blob/main/BUGS.md">BUGS.md</a> for what each fix does.</p>
+
+<main class="layout">
+  <section class="controls" aria-label="Model settings">
+    <div class="field">
+      <label for="preset">Forecaster preset</label>
+      <select id="preset">
+        <option value="daniel-08-16-26">Daniel (Aug 2026)</option>
+        <option value="eli-08-16-26">Eli (Aug 2026)</option>
+        <option value="brendan-08-16-26">Brendan (Aug 2026)</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="anchor">AC anchor</label>
+      <select id="anchor">
+        <option value="uplift-solved">Coding uplift</option>
+        <option value="time-horizon">Time horizon</option>
+        <option value="revenue">Revenue</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <span class="field-label">Examples</span>
+      <div class="chips" id="examples"></div>
+    </div>
+
+    <fieldset>
+      <legend>Coding labor</legend>
+      <div class="slider" data-key="parallel_penalty"></div>
+      <div class="slider" data-key="coding_labor_normalization"></div>
+      <div class="slider" data-key="automation_logistic_asymptote"></div>
+      <div class="slider" data-key="coding_automation_efficiency_slope"></div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Research taste</legend>
+      <div class="slider" data-key="top_percentile"></div>
+      <div class="slider" data-key="ai_research_taste_at_coding_automation_anchor_sd"></div>
+      <div class="slider" data-key="ai_research_taste_slope"></div>
+      <div class="slider" data-key="median_to_top_taste_multiplier"></div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Calibration</legend>
+      <div class="slider" data-key="present_day"></div>
+      <div class="field">
+        <label for="extra">Other parameters</label>
+        <textarea id="extra" spellcheck="false" placeholder="name = value, one per line"></textarea>
+        <div class="hint">Any model parameter by its API name (as sent to /api/compute), for example <code>rho_coding_labor = -3</code>. Applied after the sliders.</div>
+      </div>
+      <div class="chips"><button type="button" id="reset">Reset to preset</button></div>
+    </fieldset>
+  </section>
+
+  <section class="results" aria-live="polite">
+    <div class="status" id="status" role="status">Starting…</div>
+
+    <div class="stats" id="stats"></div>
+
+    <figure class="chart">
+      <figcaption>
+        <h2>When each milestone arrives</h2>
+        <div class="legend"><span class="key"></span>Fixed <span class="key key-orig"></span>Original</div>
+      </figcaption>
+      <div id="milestones" class="plot"></div>
+    </figure>
+
+    <figure class="chart">
+      <figcaption>
+        <h2>Progress over time</h2>
+        <div class="legend"><span class="key"></span>Fixed <span class="key key-orig"></span>Original</div>
+      </figcaption>
+      <div id="trajectory" class="plot"></div>
+      <p class="axis-note">Cumulative effective compute, in orders of magnitude (the model's "progress"). The dotted line is the present day.</p>
+    </figure>
+
+    <details class="table-view" open>
+      <summary>Milestone table</summary>
+      <table id="table"></table>
+    </details>
+
+    <section class="notes">
+      <h2>How to read this</h2>
+      <ul>
+        <li>Each setting runs twice: once with the fixed model and once with the original (the upstream commit this repository started from). Both get exactly the parameters the website would send.</li>
+        <li><strong>AC</strong> is the automated coder, <strong>SAR</strong> and <strong>SIAR</strong> the superhuman and superintelligent AI researcher, and <strong>ASI</strong> artificial superintelligence, as defined by the AI Futures Model. <strong>AIR-25×</strong> is when AI speeds up software progress 25-fold.</li>
+        <li>The examples reproduce the cases in BUGS.md. "Taste 10 SD" is not a bug: both models give nonsense there, because calibration assumes human-level research taste in the past.</li>
+        <li>Everything runs in your browser with <a href="https://pyodide.org">Pyodide</a>; the first load downloads about 30 MB. Settings are kept in the URL, so a link reproduces them.</li>
+      </ul>
+    </section>
+  </section>
+</main>
+
+<div class="tooltip" id="tooltip" hidden></div>
+<script type="module" src="app.js"></script>
+</body>
+</html>

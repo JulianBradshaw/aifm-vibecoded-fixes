@@ -88,3 +88,4 @@ scripts/latex/out/
 
 # Monte Carlo rollout outputs pulled from the compute box (see scripts/pipelines/pull_mc_run.sh)
 /mc_outputs/
+web/model.zip
