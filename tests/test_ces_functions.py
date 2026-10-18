@@ -39,6 +39,13 @@ class TestCESFunction:
         result = _ces_function(5.0, 3.0, 0.0, -2.0)
         assert abs(result - 3.0) < 1e-10, f"Expected 3.0, got {result}"
 
+    def test_zero_weight_drops_input_in_every_branch(self):
+        """A zero-weight input drops out for Cobb-Douglas and Leontief too, even when it is zero."""
+        for rho in [0.0, -100.0, -2.0, 0.5]:
+            assert _ces_function(0.0, 3.0, 0.0, rho) == 3.0, f"rho={rho}"
+            assert _ces_function(1.0, 3.0, 0.0, rho) == 3.0, f"rho={rho}"
+            assert _ces_function(5.0, 0.0, 1.0, rho) == 5.0, f"rho={rho}"
+
     def test_weight_one_returns_x1(self):
         """When w1=1, result should equal X1."""
         result = _ces_function(5.0, 3.0, 1.0, -2.0)

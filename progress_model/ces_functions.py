@@ -153,6 +153,11 @@ def _ces_function(X1, X2, w1, rho):
                 result[standard_ces_mask] = (w1[standard_ces_mask] * X1[standard_ces_mask] +
                                             w2[standard_ces_mask] * X2[standard_ces_mask])
 
+    # A zero-weight input drops out in every branch, including Cobb-Douglas
+    # and Leontief, and even when that unused input is itself zero.
+    result[w1 == 0] = X2[w1 == 0]
+    result[w2 == 0] = X1[w2 == 0]
+
     # Return scalar if input was scalar, array otherwise
     return float(result[0]) if input_was_scalar else result
 
