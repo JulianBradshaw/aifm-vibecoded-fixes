@@ -2005,6 +2005,11 @@ class ProgressModel:
         # First, determine if SAR experiment selection would be achieved before AC
         # This affects how we calculate TED-AI and ASI targets
         ac_time = self.results.get('aa_time')
+        # SD of the best human researcher: the top_percentile quantile of the taste
+        # distribution (= norm.ppf(top_percentile)). cfg.TOP_RESEARCHER_SD is that value
+        # only at the default top_percentile of 0.999.
+        top_researcher_sd = float(self.taste_distribution.get_sd_of_taste(
+            self.taste_distribution.get_taste_at_quantile(self.params.top_percentile)))
         sar_exp_selection_time_unconstrained = None
         sd_at_ac = None
 
@@ -2013,7 +2018,7 @@ class ProgressModel:
             sar_exp_selection_time_unconstrained = _find_exponential_crossing_time(
                 np.asarray(self.results['times'], dtype=float),
                 np.asarray(self.results['ai_research_taste_sd'], dtype=float),
-                float(cfg.TOP_RESEARCHER_SD)
+                float(top_researcher_sd)
             )
 
             # Get the SD level at AC time
@@ -2024,7 +2029,7 @@ class ProgressModel:
             )
 
         # Determine baseline SD for TED-AI calculation
-        # If SAR exp selection would happen before AC, use SD at AC; otherwise use TOP_RESEARCHER_SD
+        # If SAR exp selection would happen before AC, use SD at AC; otherwise use the top researcher's SD
         use_sar_baseline = (
             sar_exp_selection_time_unconstrained is not None and
             ac_time is not None and
@@ -2034,7 +2039,7 @@ class ProgressModel:
         if use_sar_baseline:
             ted_ai_baseline_sd = sd_at_ac
         else:
-            ted_ai_baseline_sd = cfg.TOP_RESEARCHER_SD
+            ted_ai_baseline_sd = top_researcher_sd
 
         milestones = {
             'AC': {
@@ -2078,29 +2083,29 @@ class ProgressModel:
             },
             'SAR-level-experiment-selection-skill': {
                 'metric': 'ai_research_taste_sd',
-                'target': cfg.TOP_RESEARCHER_SD,  # SD of top researcher (99.9th percentile)
+                'target': top_researcher_sd,  # SD of the top researcher (top_percentile)
                 'interpolation_type': 'exponential',
                 'requires_ac': True  # SAR also requires achieving AC coding requirement
             },
             'SIAR-level-experiment-selection-skill': {
                 'metric': 'ai_research_taste_sd',
-                'target': cfg.TOP_RESEARCHER_SD * 3.0,  # 3x the SD of top researcher
+                'target': top_researcher_sd * 3.0,  # 3x the SD of top researcher
                 'interpolation_type': 'exponential',
                 'requires_ac': True  # SIAR also requires achieving AC coding requirement
             },
             'STRAT-AI': {
                 'metric': 'ai_research_taste_sd',
-                'target': cfg.TOP_RESEARCHER_SD * (1.0 + self.params.strat_ai_m2b),  # Linearly spaced in SD
+                'target': top_researcher_sd * (1.0 + self.params.strat_ai_m2b),  # Linearly spaced in SD
                 'interpolation_type': 'exponential'
             },
             'TED-AI': {
                 'metric': 'ai_research_taste_sd',
-                'target': ted_ai_baseline_sd + cfg.TOP_RESEARCHER_SD * self.params.ted_ai_m2b,  # M2B jumps measured in TOP_RESEARCHER_SD units
+                'target': ted_ai_baseline_sd + top_researcher_sd * self.params.ted_ai_m2b,  # M2B jumps measured in top-researcher SD units
                 'interpolation_type': 'exponential'
             },
             'ASI': {
                 'metric': 'ai_research_taste_sd',
-                'target': ted_ai_baseline_sd + cfg.TOP_RESEARCHER_SD * (self.params.ted_ai_m2b + 2.0),  # 2 M2Bs above TED-AI
+                'target': ted_ai_baseline_sd + top_researcher_sd * (self.params.ted_ai_m2b + 2.0),  # 2 M2Bs above TED-AI
                 'interpolation_type': 'exponential'
             },
             'Maximum possible experiment selection skill': {
