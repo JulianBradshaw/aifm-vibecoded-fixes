@@ -217,8 +217,8 @@ PARAMETER_BOUNDS = {
     'coding_automation_efficiency_slope': (0.01, 10.0),
     'optimal_ces_eta_init': (1e-12, 1e12),
     'optimal_ces_grid_size': (256, 16384),
-    'optimal_ces_frontier_tail_eps': (1e-20, 1e-1),
-    'optimal_ces_frontier_cap': (1.0, 1e30),
+    'optimal_ces_frontier_tail_eps': (1e-300, 1e-1),
+    'optimal_ces_frontier_cap': (1.0, 1e300),
     'max_serial_coding_labor_multiplier': (1.0, 1e30),
     # coding labor mode (categorical; bounds unused by UI collector)
     'coding_labor_mode': (0, 1),

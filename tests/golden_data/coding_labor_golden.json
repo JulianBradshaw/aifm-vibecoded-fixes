@@ -168,7 +168,7 @@
       "parallel_penalty": 0.3,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 6.7630036762409835
+      "result": 6.763003676240983
     },
     {
       "automation_fraction": 0.1,
@@ -208,7 +208,7 @@
       "parallel_penalty": 0.3,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 6.750585868471362
+      "result": 6.7505858684713616
     },
     {
       "automation_fraction": 0.1,
@@ -648,7 +648,7 @@
       "parallel_penalty": 0.3,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 6.9845156408633775
+      "result": 6.984515640863377
     },
     {
       "automation_fraction": 0.1,
@@ -1148,7 +1148,7 @@
       "parallel_penalty": 0.7,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 95.5773696373637
+      "result": 95.57736963736369
     },
     {
       "automation_fraction": 0.1,
@@ -1158,7 +1158,7 @@
       "parallel_penalty": 1.0,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 674.6502373291227
+      "result": 674.6502373291225
     },
     {
       "automation_fraction": 0.1,
@@ -1248,7 +1248,7 @@
       "parallel_penalty": 0.3,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 6.7013715551018525
+      "result": 6.701371555101852
     },
     {
       "automation_fraction": 0.1,
@@ -1258,7 +1258,7 @@
       "parallel_penalty": 0.5,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 23.819876009566457
+      "result": 23.819876009566453
     },
     {
       "automation_fraction": 0.1,
@@ -1268,7 +1268,7 @@
       "parallel_penalty": 0.7,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 84.66721900819837
+      "result": 84.66721900819836
     },
     {
       "automation_fraction": 0.1,
@@ -1278,7 +1278,7 @@
       "parallel_penalty": 1.0,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 567.3864931111196
+      "result": 567.3864931111195
     },
     {
       "automation_fraction": 0.1,
@@ -1328,7 +1328,7 @@
       "parallel_penalty": 0.3,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 8.458507597609538
+      "result": 8.458507597609536
     },
     {
       "automation_fraction": 0.1,
@@ -1668,7 +1668,7 @@
       "parallel_penalty": 0.7,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 80.92626662259279
+      "result": 80.92626662259278
     },
     {
       "automation_fraction": 0.3,
@@ -1788,7 +1788,7 @@
       "parallel_penalty": 0.7,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 109.43097549126703
+      "result": 109.43097549126702
     },
     {
       "automation_fraction": 0.3,
@@ -1898,7 +1898,7 @@
       "parallel_penalty": 0.5,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 20.590041191289497
+      "result": 20.590041191289494
     },
     {
       "automation_fraction": 0.3,
@@ -2248,7 +2248,7 @@
       "parallel_penalty": 0.3,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 9.439969967518538
+      "result": 9.439969967518536
     },
     {
       "automation_fraction": 0.3,
@@ -2408,7 +2408,7 @@
       "parallel_penalty": 0.3,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 5.3976106274357045
+      "result": 5.397610627435704
     },
     {
       "automation_fraction": 0.3,
@@ -2418,7 +2418,7 @@
       "parallel_penalty": 0.5,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 16.60871070080524
+      "result": 16.608710700805236
     },
     {
       "automation_fraction": 0.3,
@@ -2428,7 +2428,7 @@
       "parallel_penalty": 0.7,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 51.105811475344005
+      "result": 51.105811475344
     },
     {
       "automation_fraction": 0.3,
@@ -2438,7 +2438,7 @@
       "parallel_penalty": 1.0,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 275.8492711430425
+      "result": 275.8492711430424
     },
     {
       "automation_fraction": 0.3,
@@ -2778,7 +2778,7 @@
       "parallel_penalty": 0.5,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 44.76614810358453
+      "result": 44.76614810358452
     },
     {
       "automation_fraction": 0.3,
@@ -2788,7 +2788,7 @@
       "parallel_penalty": 0.7,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 204.799842382617
+      "result": 204.79984238261696
     },
     {
       "automation_fraction": 0.3,
@@ -3218,7 +3218,7 @@
       "parallel_penalty": 0.5,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 21.48888815273638
+      "result": 21.488888152736376
     },
     {
       "automation_fraction": 0.5,
@@ -3378,7 +3378,7 @@
       "parallel_penalty": 0.5,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 21.48888815273638
+      "result": 21.488888152736376
     },
     {
       "automation_fraction": 0.5,
@@ -3568,7 +3568,7 @@
       "parallel_penalty": 0.3,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 8.659276771732902
+      "result": 8.6592767717329
     },
     {
       "automation_fraction": 0.5,
@@ -3648,7 +3648,7 @@
       "parallel_penalty": 0.3,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 8.265325512981718
+      "result": 8.265325512981716
     },
     {
       "automation_fraction": 0.5,
@@ -3828,7 +3828,7 @@
       "parallel_penalty": 0.7,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 204.5130365127146
+      "result": 204.51303651271456
     },
     {
       "automation_fraction": 0.5,
@@ -3838,7 +3838,7 @@
       "parallel_penalty": 1.0,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 2000.000000000001
+      "result": 2000.0000000000007
     },
     {
       "automation_fraction": 0.5,
@@ -3978,7 +3978,7 @@
       "parallel_penalty": 0.5,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 15.157165664952412
+      "result": 15.15716566495241
     },
     {
       "automation_fraction": 0.5,
@@ -3988,7 +3988,7 @@
       "parallel_penalty": 0.7,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 44.96402662986797
+      "result": 44.964026629867966
     },
     {
       "automation_fraction": 0.5,
@@ -3998,7 +3998,7 @@
       "parallel_penalty": 1.0,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 229.7396709948123
+      "result": 229.73967099481226
     },
     {
       "automation_fraction": 0.5,
@@ -4178,7 +4178,7 @@
       "parallel_penalty": 0.5,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 67.95383094725521
+      "result": 67.9538309472552
     },
     {
       "automation_fraction": 0.5,
@@ -4978,7 +4978,7 @@
       "parallel_penalty": 0.5,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 38.6567126266526
+      "result": 38.65671262665259
     },
     {
       "automation_fraction": 0.7,
@@ -5048,7 +5048,7 @@
       "parallel_penalty": 0.3,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 8.951040429321466
+      "result": 8.951040429321464
     },
     {
       "automation_fraction": 0.7,
@@ -5068,7 +5068,7 @@
       "parallel_penalty": 0.7,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 166.35590081210563
+      "result": 166.3559008121056
     },
     {
       "automation_fraction": 0.7,
@@ -5078,7 +5078,7 @@
       "parallel_penalty": 1.0,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 1489.0583938253496
+      "result": 1489.0583938253494
     },
     {
       "automation_fraction": 0.7,
@@ -5128,7 +5128,7 @@
       "parallel_penalty": 0.3,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 9.439969967518538
+      "result": 9.439969967518536
     },
     {
       "automation_fraction": 0.7,
@@ -5298,7 +5298,7 @@
       "parallel_penalty": 0.5,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 44.866595415428314
+      "result": 44.86659541542831
     },
     {
       "automation_fraction": 0.7,
@@ -5308,7 +5308,7 @@
       "parallel_penalty": 0.7,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 205.44347939487992
+      "result": 205.4434793948799
     },
     {
       "automation_fraction": 0.7,
@@ -5428,7 +5428,7 @@
       "parallel_penalty": 0.7,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 69.05865966919477
+      "result": 69.05865966919475
     },
     {
       "automation_fraction": 0.7,
@@ -5448,7 +5448,7 @@
       "parallel_penalty": 0.3,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 13.413903949909562
+      "result": 13.41390394990956
     },
     {
       "automation_fraction": 0.7,
@@ -5458,7 +5458,7 @@
       "parallel_penalty": 0.5,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 75.72837779751296
+      "result": 75.72837779751295
     },
     {
       "automation_fraction": 0.7,
@@ -5468,7 +5468,7 @@
       "parallel_penalty": 0.7,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 427.5255902575264
+      "result": 427.52559025752635
     },
     {
       "automation_fraction": 0.7,
@@ -5478,7 +5478,7 @@
       "parallel_penalty": 1.0,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 5734.787203842853
+      "result": 5734.787203842852
     },
     {
       "automation_fraction": 0.7,
@@ -6848,7 +6848,7 @@
       "parallel_penalty": 0.3,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 9.120079313581021
+      "result": 9.12007931358102
     },
     {
       "automation_fraction": 0.9,
@@ -6878,7 +6878,7 @@
       "parallel_penalty": 1.0,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 1584.8763474537766
+      "result": 1584.8763474537764
     },
     {
       "automation_fraction": 0.9,
@@ -6988,7 +6988,7 @@
       "parallel_penalty": 0.7,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 604.7238820673927
+      "result": 604.7238820673925
     },
     {
       "automation_fraction": 0.9,
@@ -7178,7 +7178,7 @@
       "parallel_penalty": 0.5,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 104.70483150362755
+      "result": 104.70483150362753
     },
     {
       "automation_fraction": 0.9,
@@ -7268,7 +7268,7 @@
       "parallel_penalty": 0.7,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 25.4729774579591
+      "result": 25.472977457959097
     },
     {
       "automation_fraction": 0.99,
@@ -7278,7 +7278,7 @@
       "parallel_penalty": 1.0,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 102.01999591920017
+      "result": 102.01999591920016
     },
     {
       "automation_fraction": 0.99,
@@ -7468,7 +7468,7 @@
       "parallel_penalty": 0.7,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 25.385343207772426
+      "result": 25.38534320777243
     },
     {
       "automation_fraction": 0.99,
@@ -7478,7 +7478,7 @@
       "parallel_penalty": 1.0,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 101.51896914577466
+      "result": 101.51896914577468
     },
     {
       "automation_fraction": 0.99,
@@ -7568,7 +7568,7 @@
       "parallel_penalty": 0.3,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 4.005138639045678
+      "result": 4.005138639045677
     },
     {
       "automation_fraction": 0.99,
@@ -7778,7 +7778,7 @@
       "parallel_penalty": 0.5,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 31.861220993318682
+      "result": 31.861220993318685
     },
     {
       "automation_fraction": 0.99,
@@ -7788,7 +7788,7 @@
       "parallel_penalty": 0.7,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 127.22351223472702
+      "result": 127.22351223472704
     },
     {
       "automation_fraction": 0.99,
@@ -7798,7 +7798,7 @@
       "parallel_penalty": 1.0,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 1015.1374031850911
+      "result": 1015.1374031850912
     },
     {
       "automation_fraction": 0.99,
@@ -7928,7 +7928,7 @@
       "parallel_penalty": 0.3,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 7.979283468088389
+      "result": 7.97928346808839
     },
     {
       "automation_fraction": 0.99,
@@ -7938,7 +7938,7 @@
       "parallel_penalty": 0.5,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 31.86200903678022
+      "result": 31.862009036780222
     },
     {
       "automation_fraction": 0.99,
@@ -7958,7 +7958,7 @@
       "parallel_penalty": 1.0,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 1015.1876198598644
+      "result": 1015.1876198598645
     },
     {
       "automation_fraction": 0.99,
@@ -8178,7 +8178,7 @@
       "parallel_penalty": 0.5,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 100.49871858614098
+      "result": 100.49871858614097
     },
     {
       "automation_fraction": 0.99,
@@ -8188,7 +8188,7 @@
       "parallel_penalty": 0.7,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 635.367116364576
+      "result": 635.3671163645758
     },
     {
       "automation_fraction": 0.99,
@@ -8198,7 +8198,7 @@
       "parallel_penalty": 1.0,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 10099.992437456358
+      "result": 10099.992437456356
     },
     {
       "automation_fraction": 0.99,
@@ -8548,7 +8548,7 @@
       "parallel_penalty": 0.7,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 639.441335493907
+      "result": 639.4413354939069
     },
     {
       "automation_fraction": 0.99,
@@ -8558,7 +8558,7 @@
       "parallel_penalty": 1.0,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 10192.640913260626
+      "result": 10192.640913260624
     },
     {
       "automation_fraction": 0.99,
@@ -8568,7 +8568,7 @@
       "parallel_penalty": 0.3,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 15.920527342096978
+      "result": 15.920527342096976
     },
     {
       "automation_fraction": 0.99,
@@ -8628,7 +8628,7 @@
       "parallel_penalty": 0.7,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 636.3066031683596
+      "result": 636.3066031683595
     },
     {
       "automation_fraction": 0.99,
@@ -8638,7 +8638,7 @@
       "parallel_penalty": 1.0,
       "cognitive_normalization": 1.0,
       "human_only": false,
-      "result": 10121.33401438463
+      "result": 10121.334014384629
     },
     {
       "automation_fraction": 0.5,

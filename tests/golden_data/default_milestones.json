@@ -5,7 +5,6 @@
     "r_software": 2.4,
     "software_progress_rate_at_reference_year": 1,
     "automation_fraction_at_coding_automation_anchor": 1,
-    "swe_multiplier_at_present_day": null,
     "automation_interp_type": "logistic",
     "automation_logistic_asymptote": 1.1,
     "coding_labor_normalization": 1,
@@ -61,12 +60,12 @@
     "sos_mode": false,
     "sos_start_milestone": "AC"
   },
-  "aa_time": 2027.785926074832,
-  "ai2027_sc_time": 2028.404265860005,
-  "progress_at_aa": 37.752433776244054,
-  "final_progress": 80.0737846585168,
-  "anchor_progress_rate": 1.6184954214155913,
-  "sc_sw_multiplier": 2.696010573475257,
+  "aa_time": 2027.7859226501778,
+  "ai2027_sc_time": 2028.4045940235926,
+  "progress_at_aa": 37.75241747123405,
+  "final_progress": 80.07346961870655,
+  "anchor_progress_rate": 1.6185086535267872,
+  "sc_sw_multiplier": 2.6960060452539336,
   "initial_progress": null,
   "horizon_uses_shifted_form": true
 }

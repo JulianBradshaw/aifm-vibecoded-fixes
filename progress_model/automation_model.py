@@ -254,7 +254,7 @@ class AutomationModel:
 
     # ===================== Optimal CES fast path (embedded) =====================
     class _FrontierPrecomp(NamedTuple):
-        grid_i: np.ndarray
+        grid_i: np.ndarray  # interpolation coordinate x = -log(1 - i), not i itself
         log_Eaut: np.ndarray
         log_B: np.ndarray
         log_F: np.ndarray
@@ -399,11 +399,25 @@ class AutomationModel:
             bounds_map = getattr(cfg, 'PARAMETER_BOUNDS', {})
             tail_bounds = bounds_map.get('optimal_ces_frontier_tail_eps', (1e-12, 0.1))
             tail_low, tail_high = (float(tail_bounds[0]), float(tail_bounds[1])) if isinstance(tail_bounds, (list, tuple)) and len(tail_bounds) == 2 else (1e-12, 0.1)
-            tail_low = max(min(tail_low, 0.1), 1e-24)
+            tail_low = max(min(tail_low, 0.1), 1e-300)
             tail_high = min(max(tail_high, tail_low * 10.0), 0.5)
             tail_eps = float(np.clip(tail_eps, tail_low, tail_high))
-            grid_max = float(max(1e-6, 1.0 - tail_eps))
-            grid_i = np.linspace(0.0, grid_max, M)
+            # Work in v = 1 - i so the tail is exact: 1.0 - tail_eps rounds to 1.0
+            # for tail_eps < ~1e-16, which is where large caps live. Uniform in i
+            # down to v = 1e-2, then geometric in v down to tail_eps (log(1 - i)
+            # and, for asymptotes near 1, log E_aut(i) vary fastest there).
+            v_split = max(1e-2, tail_eps)
+            v_body = 1.0 - np.linspace(0.0, 1.0 - v_split, M)
+            if tail_eps < v_split:
+                v_tail = np.geomspace(v_split, tail_eps, max(64, M // 4))[1:]
+                v_grid = np.concatenate([v_body, v_tail])
+            else:
+                v_grid = v_body
+            grid_i = 1.0 - v_grid
+            log_one_minus_i = np.log(v_grid)
+            # Interpolation coordinate x = -log(1 - i): strictly increasing even
+            # where grid_i itself has collapsed onto 1.0 in floating point.
+            grid_x = -log_one_minus_i
 
             # Build E_aut(i) using existing inverse mapping: get_progress_from_index(i)
             # Then convert progress (OOMs of effective compute) to effective compute.
@@ -422,7 +436,7 @@ class AutomationModel:
             if not (rho < 1 and abs(rho) > 1e-18 and theta > 0 and eta_init > 0):
                 return None
 
-            di = grid_i[1] - grid_i[0]
+            di = v_grid[:-1] - v_grid[1:]
             alpha = rho / (1.0 - rho)
             beta = alpha * theta
             gamma = theta / (1.0 - rho)
@@ -436,14 +450,12 @@ class AutomationModel:
             log_inc = log_di + log_half + np.logaddexp(log_w[:-1], log_w[1:])
             # Cumulative logaddexp: log_B[k+1] = logaddexp(log_B[k], log_inc[k])
             # This is equivalent to log(cumsum(exp(log_inc))) but numerically stable
-            log_B = np.empty(M, dtype=np.float64)
+            log_B = np.empty(len(v_grid), dtype=np.float64)
             log_B[0] = -np.inf  # B[0] = 0 => log_B[0] = -inf by convention
             # Vectorized cumulative logaddexp - numerically stable for any range
             log_B[1:] = np.logaddexp.accumulate(log_inc)
 
-            one_minus_i = 1.0 - grid_i
             # log_Q = (1-rho) * log(1-i)
-            log_one_minus_i = np.log(one_minus_i + 1e-18)
             log_Q = (1.0 - rho) * log_one_minus_i
             # log_R = log_Q - theta * log_Eaut
             log_R = log_Q - theta * log_Eaut
@@ -452,7 +464,7 @@ class AutomationModel:
             # Enforce monotone in log-space
             log_F = np.maximum.accumulate(log_F)
 
-            return AutomationModel._FrontierPrecomp(grid_i, log_Eaut, log_B, log_F, log_Q, log_R, rho, theta, eta_init, float(1.0 - grid_i[-1]))
+            return AutomationModel._FrontierPrecomp(grid_x, log_Eaut, log_B, log_F, log_Q, log_R, rho, theta, eta_init, float(v_grid[-1]))
         except Exception as e:
             # Don't swallow timeout/interrupt exceptions - let them propagate
             if isinstance(e, (KeyboardInterrupt, SystemExit)) or 'TimeoutError' in type(e).__name__:
@@ -593,7 +605,7 @@ class AutomationModel:
                 log_comp = log_comp_int[0] if interior_case[0] else (log_comp_bnd[0] if boundary_case[0] else 0.0)
                 human = float(np.exp(log_human)) if not H_zero[0] else 0.0
                 comp = float(np.exp(log_comp)) if not H_zero[0] else 0.0
-                return float(L_arr[0]), {"i_cut": float(i_c), "i_E": float(i_E[0]), "case": case, "human_term": human, "comp_term": comp}
+                return float(L_arr[0]), {"i_cut": float(-np.expm1(-i_c)), "i_E": float(-np.expm1(-i_E[0])), "case": case, "human_term": human, "comp_term": comp}
 
             # Return scalar if input was scalar
             return float(L_arr[0]) if is_scalar else L_arr

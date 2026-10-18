@@ -372,7 +372,7 @@ class Parameters:
                 tail_min, tail_max = float(tail_eps_limits[0]), float(tail_eps_limits[1])
             else:
                 tail_min, tail_max = 1e-12, 1e-1
-            tail_min = max(tail_min, 1e-24)
+            tail_min = max(tail_min, 1e-300)
             tail_max = min(max(tail_max, tail_min * 10.0), 0.5)
             self.optimal_ces_frontier_tail_eps = float(np.clip(tail_eps, tail_min, tail_max))
 
@@ -400,8 +400,9 @@ class Parameters:
                         logger.warning("parallel_penalty must be positive to derive optimal_ces_frontier_cap from max_serial_coding_labor_multiplier")
                     else:
                         try:
-                            exponent = 1.0 / penalty
-                            derived_cap = float(np.power(max_serial, exponent))
+                            # log space: max_serial^(1/λ) overflows for small λ
+                            log10_cap = min(float(np.log10(max_serial)) / penalty, float(np.log10(cap_max)))
+                            derived_cap = float(10.0 ** log10_cap)
                         except (OverflowError, ValueError):
                             derived_cap = None
                         if derived_cap is not None and np.isfinite(derived_cap) and derived_cap > 0:
