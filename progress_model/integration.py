@@ -416,6 +416,7 @@ def integrate_progress(
     time_series_data: TimeSeriesData,
     params: Parameters,
     direction: str = 'forward',
+    return_dense: bool = False,
 ) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
     """
     Solve the coupled differential equation system with robust fallback methods:
@@ -663,6 +664,13 @@ def integrate_progress(
             logger.warning("Non-positive research stock values detected, clamping to minimum")
             research_stock_values = np.maximum(research_stock_values, 1e-6)
 
+        if return_dense:
+            # The solver's continuous solution t -> [logE, RS], so milestone crossings
+            # can be located on it instead of on the coarse output grid.
+            if sol.success:
+                return times, logE_values, research_stock_values, sol.sol
+            return (times, logE_values, research_stock_values,
+                    lambda t: sol.sol(np.clip(t, _t_lo, _t_hi)))
         return times, logE_values, research_stock_values
 
     except Exception as e:

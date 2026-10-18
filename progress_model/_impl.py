@@ -1481,7 +1481,8 @@ class ProgressModel:
         # With just time -> effective compute and research stock, you can compute all the other metrics.
         _t_integrate_start = time.perf_counter()
         _c_integrate_start = time.process_time()
-        times, progress_values, research_stock_values = integrate_progress(time_range, initial_progress, initial_research_stock_val, self.data, self.params)
+        times, progress_values, research_stock_values, self._progress_dense = integrate_progress(
+            time_range, initial_progress, initial_research_stock_val, self.data, self.params, return_dense=True)
         _dt_integrate = time.perf_counter() - _t_integrate_start
         _dt_integrate_cpu = time.process_time() - _c_integrate_start
         _timing_wall['integrate_progress'] = _dt_integrate
@@ -1508,7 +1509,8 @@ class ProgressModel:
                 }
                 logger.info(f"SIE mode freeze time ({sos_milestone}): {full_automation_time}")
                 self.freeze_time_series_at_time(full_automation_time)
-                times, progress_values, research_stock_values = integrate_progress(time_range, initial_progress, initial_research_stock_val, self.data, self.params)
+                times, progress_values, research_stock_values, self._progress_dense = integrate_progress(
+                    time_range, initial_progress, initial_research_stock_val, self.data, self.params, return_dense=True)
                 takeoff_start_research_stock = _log_interp(full_automation_time, times, research_stock_values)
                 self.human_only_results['takeoff_start_stats'] = takeoff_start_human_only_stats
             else:
@@ -1585,6 +1587,21 @@ class ProgressModel:
 
         # Calculate all metrics in a single pass to avoid redundancy
         logger.info("Computing metrics")
+        self._metrics_loop_kwargs = dict(
+            data=self.data,
+            params=self.params,
+            initial_progress=initial_progress,
+            present_day_human_labor=present_day_human_labor,
+            present_day_inference_compute=present_day_inference_compute,
+            present_day_experiment_compute=present_day_experiment_compute,
+            present_day_research_stock=present_day_research_stock,
+            present_day_human_only_research_effort=present_day_human_only_research_effort,
+            taste_distribution=self.taste_distribution,
+            horizon_trajectory=self.horizon_trajectory,
+            takeoff_start_human_only_stats=takeoff_start_human_only_stats,
+            RS_0=initial_research_stock_val,
+            extra_observables=None,
+        )
         metrics, timing_wall_cpu, timing_meta_metrics = compute_metrics_loop(
             times=times,
             progress_values=progress_values,
@@ -1674,6 +1691,8 @@ class ProgressModel:
                         logger.warning(f"Error interpolating SC time: {e}")
                         aa_time = None
 
+                if aa_time is not None and aa_time > times[0]:
+                    aa_time = self._refine_progress_crossing_time(float(aa_time), float(sc_progress_target), times)
                 logger.info(f"AC level ({sc_progress_target:.3f}) reached at time {aa_time:.3f}")
             else:
                 logger.info(f"AC level ({sc_progress_target:.3f}) not reached within trajectory (final progress: {progress_values[-1]:.3f})")
@@ -1998,6 +2017,63 @@ class ProgressModel:
         # logger.info(f"Automation: {automation_fractions[0]:.3f} -> {automation_fractions[-1]:.3f}")
         return times, progress_values, research_stock_values
     
+    def _refine_progress_crossing_time(self, t_guess: float, target_progress: float, times) -> float:
+        """Time at which the CONTINUOUS ODE solution reaches `target_progress` (logE).
+
+        The output grid is 0.1 yr; during a fast takeoff progress moves many OOMs per
+        cell, so interpolating on it misplaces crossings. Brackets the grid cell around
+        t_guess and root-finds on the solver's dense output. Falls back to t_guess."""
+        dense = getattr(self, '_progress_dense', None)
+        if dense is None:
+            return t_guess
+        try:
+            from scipy.optimize import brentq
+            times = np.asarray(times, dtype=float)
+            j = int(np.clip(np.searchsorted(times, t_guess), 1, len(times) - 1))
+            lo, hi = float(times[j - 1]), float(times[min(j + 1, len(times) - 1)])
+            f = lambda t: float(dense(t)[0]) - target_progress
+            if f(lo) <= 0.0 <= f(hi):
+                return float(brentq(f, lo, hi, xtol=1e-9))
+        except Exception as e:
+            if should_reraise(e):
+                raise
+        return t_guess
+
+    def _metrics_at_time(self, t: float) -> Optional[Dict[str, Any]]:
+        """Metrics evaluated on the CONTINUOUS solution at time t (not interpolated on
+        the 0.1-yr output grid, which during a fast takeoff can be off by many OOMs)."""
+        dense = getattr(self, '_progress_dense', None)
+        kw = getattr(self, '_metrics_loop_kwargs', None)
+        if dense is None or kw is None:
+            return None
+        try:
+            ts = np.array([t, t + 1e-6])
+            y = np.asarray(dense(ts))
+            metrics, _, _ = compute_metrics_loop(times=ts, progress_values=y[0],
+                                                 research_stock_values=y[1], **kw)
+            return {k: (v[0] if isinstance(v, list) and len(v) else v) for k, v in metrics.items()}
+        except Exception as e:
+            if should_reraise(e):
+                raise
+            logger.warning(f"Failed evaluating metrics at t={t}: {e}")
+            return None
+
+    def _progress_at_sd(self, target_sd: float, p_lo: float, p_hi: float) -> Optional[float]:
+        """Progress at which AI research taste reaches `target_sd` SDs (taste is a
+        function of progress alone), by root-finding on the exact taste schedule."""
+        try:
+            from scipy.optimize import brentq
+            def g(p):
+                sd = float(np.atleast_1d(self.taste_distribution.get_sd_of_taste(
+                    compute_ai_research_taste(np.atleast_1d(p), self.params)))[0])
+                return (sd if np.isfinite(sd) else np.sign(sd) * 1e300) - target_sd
+            if g(p_lo) <= 0.0 <= g(p_hi):
+                return float(brentq(g, p_lo, p_hi, xtol=1e-10))
+        except Exception as e:
+            if should_reraise(e):
+                raise
+        return None
+
     def compute_milestones(self):
         """
         Compute milestones for the model.
@@ -2021,12 +2097,11 @@ class ProgressModel:
                 float(top_researcher_sd)
             )
 
-            # Get the SD level at AC time
-            sd_at_ac = _log_interp(
-                ac_time,
-                self.results['times'],
-                np.asarray(self.results['ai_research_taste_sd'], dtype=float)
-            )
+            # Get the SD level at AC time. AC is defined by progress == progress_at_aa and
+            # taste is a function of progress alone, so evaluate it there exactly rather
+            # than log-interpolating the SD series in time.
+            sd_at_ac = float(np.atleast_1d(self.taste_distribution.get_sd_of_taste(
+                compute_ai_research_taste(np.atleast_1d(float(self.results['sc_progress_level'])), self.params)))[0])
 
         # Determine baseline SD for TED-AI calculation
         # If SAR exp selection would happen before AC, use SD at AC; otherwise use the top researcher's SD
@@ -2153,6 +2228,18 @@ class ProgressModel:
                     np.asarray(self.results[milestone['metric']], dtype=float),
                     float(milestone['target'])
                 )
+                # Taste-SD milestones: locate the crossing on the continuous solution
+                # (exact SD(progress) inverted, then progress(t) from the dense output)
+                # rather than log-interpolating SD across a coarse time cell.
+                if time is not None and milestone['metric'] == 'ai_research_taste_sd':
+                    _t = np.asarray(self.results['times'], dtype=float)
+                    _m = np.asarray(self.results['ai_research_taste_sd'], dtype=float)
+                    _p = np.asarray(self.results['progress'], dtype=float)
+                    _j = int(np.where(_m >= float(milestone['target']))[0][0])
+                    if _j > 0:
+                        _pstar = self._progress_at_sd(float(milestone['target']), float(_p[_j - 1]), float(_p[_j]))
+                        if _pstar is not None:
+                            time = self._refine_progress_crossing_time(float(time), _pstar, _t)
             else:
                 time = np.interp(milestone['target'], self.results[milestone['metric']], self.results['times'])
                 if np.interp(time, self.results['times'], self.results[milestone['metric']]) < milestone['target'] - 1e-4:
@@ -2206,6 +2293,15 @@ class ProgressModel:
                 milestone['research_stock'] = _log_interp(milestone['time'], self.results['times'], np.asarray(self.results['research_stock'], dtype=float))
                 if self.results['takeoff_progress_multipliers']:
                     milestone['takeoff_progress_multiplier'] = _log_interp(milestone['time'], self.results['times'], np.asarray(self.results['takeoff_progress_multipliers'], dtype=float))
+                # Overwrite the grid interpolations with values on the continuous solution.
+                _q = self._metrics_at_time(float(milestone['time']))
+                if _q is not None:
+                    if milestone_name not in ('AIR-5x', 'AIR-25x', 'AIR-250x', 'AIR-2000x', 'AIR-10000x'):
+                        milestone['progress_multiplier'] = float(_q['ai_sw_progress_mult_ref_present_day'])
+                    milestone['research_effort'] = float(_q['research_efforts'])
+                    milestone['research_stock'] = float(self._progress_dense(float(milestone['time']))[1])
+                    if self.results['takeoff_progress_multipliers']:
+                        milestone['takeoff_progress_multiplier'] = float(_q['takeoff_progress_multipliers'])
         milestones_list = list(zip(milestones.keys(), milestones.values()))
         # Filter out milestones without time and sort by time
         milestones_list = [(name, milestone) for name, milestone in milestones_list if 'time' in milestone]
