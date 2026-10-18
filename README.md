@@ -1,7 +1,21 @@
-# AI Futures Model
+# AI Futures Model (with bug fixes)
 
-The model and website behind [aifuturesmodel.com](https://www.aifuturesmodel.com/),
-an interactive forecast of AI timelines and takeoff speeds.
+> [!WARNING]
+> **Unverified fixes.** This repository is a copy of
+> [AI-Futures-Project/aifm-public](https://github.com/AI-Futures-Project/aifm-public)
+> with bug fixes written by an AI coding assistant (Claude). I (Julian Bradshaw)
+> have not verified these fixes, and I don't fully understand all of them.
+> Treat them as proposals to check, not as corrections endorsed by me or by the
+> AI Futures Project.
+
+This fork changes no model structure or parameter values; it only fixes
+mathematical, numerical and code bugs. [BUGS.md](BUGS.md) lists each bug,
+explains the worst ones and shows how much each fix moves the forecasts (under a
+day for the default presets). Each fix is its own commit.
+
+The upstream model and website run [aifuturesmodel.com](https://www.aifuturesmodel.com/),
+an interactive forecast of AI timelines and takeoff speeds. The rest of this
+README is upstream's and applies unchanged.
 
 The Python model explores a feedback loop: more capable AI can automate more AI
 research, accelerating algorithmic progress and making AI more capable. The
