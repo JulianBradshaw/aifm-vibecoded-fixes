@@ -60,12 +60,12 @@
     "sos_mode": false,
     "sos_start_milestone": "AC"
   },
-  "aa_time": 2027.7864452017316,
-  "ai2027_sc_time": 2028.40496132007,
-  "progress_at_aa": 37.75241747126574,
-  "final_progress": 80.07390777683817,
-  "anchor_progress_rate": 1.618543418438127,
-  "sc_sw_multiplier": 2.6930908442559547,
+  "aa_time": 2027.7862307782516,
+  "ai2027_sc_time": 2028.4046590385133,
+  "progress_at_aa": 37.752398028551276,
+  "final_progress": 80.07379249110241,
+  "anchor_progress_rate": 1.618468939100604,
+  "sc_sw_multiplier": 2.6932248285915774,
   "initial_progress": null,
   "horizon_uses_shifted_form": true
 }

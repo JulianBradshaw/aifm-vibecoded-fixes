@@ -565,15 +565,12 @@ class AutomationModel:
             C_arr = np.broadcast_to(C_input, N) if len(C_input) == 1 else C_input
             logE_arr = np.broadcast_to(logE_input, N) if len(logE_input) == 1 else logE_input
 
-            # Find capability-limited indices for all logE values
-            j = np.searchsorted(pc.log_Eaut, logE_arr, side='right') - 1
-            j = np.clip(j, 0, len(pc.grid_i) - 2)
-
-            # Interpolate i_E for all points
-            i0, i1 = pc.grid_i[j], pc.grid_i[j + 1]
-            le0, le1 = pc.log_Eaut[j], pc.log_Eaut[j + 1]
-            tE = np.where(le1 != le0, np.clip((logE_arr - le0) / (le1 - le0), 0.0, 1.0), 0.0)
-            i_E = (1.0 - tE) * i0 + tE * i1
+            # Capability-limited index straight from the automation schedule
+            # (in x = -log(1 - i)), rather than interpolating the tabulated
+            # inverse, capped at the frontier's tail.
+            a_E = np.asarray(self.get_automation_fraction(logE_arr / np.log(cfg.BASE_FOR_SOFTWARE_LOM)), dtype=float)
+            with np.errstate(divide='ignore'):
+                i_E = np.minimum(-np.log1p(-np.clip(a_E, 0.0, 1.0)), pc.grid_i[-1])
 
             # Compute kappa and logS for all points
             kappa = C_arr / np.maximum(H_arr, 1e-18)
