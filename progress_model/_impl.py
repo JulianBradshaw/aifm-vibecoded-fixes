@@ -1188,7 +1188,8 @@ class ProgressModel:
                 (cfg.REFERENCE_COMPUTE_CHANGE, self.params.compute_anchor_exp_cap),
                 (cfg.REFERENCE_LABOR_CHANGE, self.params.labor_anchor_exp_cap),
                 ref_exp_compute, ref_coding_labor,
-                self.params.parallel_penalty
+                self.params.parallel_penalty,
+                self.params.coding_labor_normalization,
             )
             self.params.rho_experiment_capacity = rho
             self.params.alpha_experiment_capacity = alpha_experiment_capacity

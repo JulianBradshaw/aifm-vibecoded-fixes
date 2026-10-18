@@ -140,7 +140,7 @@ def calculate_initial_research_stock(time_series_data: TimeSeriesData, params: P
         L_HUMAN_0 = _log_interp(start_time, time_series_data.time, time_series_data.L_HUMAN)
         experiment_compute_0 = _log_interp(start_time, time_series_data.time, time_series_data.experiment_H100e)
         initial_aggregate_research_taste = 1
-        coding_labor_0 = L_HUMAN_0 ** params.parallel_penalty
+        coding_labor_0 = L_HUMAN_0 ** params.parallel_penalty * params.coding_labor_normalization
         # Calculate RS'(0)
         rs_rate_0 = compute_research_effort(
             experiment_compute_0, coding_labor_0,
@@ -153,7 +153,7 @@ def calculate_initial_research_stock(time_series_data: TimeSeriesData, params: P
         experiment_compute_dt = _log_interp(start_time + dt, time_series_data.time, time_series_data.experiment_H100e)
 
         # Automation fraction changes very little over small dt, so use same value
-        coding_labor_dt = L_HUMAN_dt ** params.parallel_penalty
+        coding_labor_dt = L_HUMAN_dt ** params.parallel_penalty * params.coding_labor_normalization
 
         rs_rate_dt = compute_research_effort(
             experiment_compute_dt, coding_labor_dt,

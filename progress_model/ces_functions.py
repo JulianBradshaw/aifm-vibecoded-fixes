@@ -449,7 +449,8 @@ def compute_exp_capacity_params_from_anchors(
     labor_anchor: tuple[float, float],
     current_exp_compute: float,
     current_coding_labor: float,
-    parallel_penalty: float = 0.0
+    parallel_penalty: float = 0.0,
+    coding_labor_normalization: float = 1.0,
 ) -> tuple[float, float, float]:
     """
     Compute the parameters for the experiment capacity CES from the asymptotes and anchors.
@@ -461,7 +462,7 @@ def compute_exp_capacity_params_from_anchors(
     experiment_compute_exponent = compute_experiment_compute_exponent_from_anchor(
         inf_compute_asymptote, inf_labor_asymptote, compute_anchor, rho
     )
-    serial_coding_labor = current_coding_labor ** parallel_penalty
+    serial_coding_labor = current_coding_labor ** parallel_penalty * coding_labor_normalization
     alpha_experiment_capacity = compute_alpha_experiment_capacity_from_asymptotes(
         inf_labor_asymptote, inf_compute_asymptote, experiment_compute_exponent,
         current_exp_compute, serial_coding_labor, rho
