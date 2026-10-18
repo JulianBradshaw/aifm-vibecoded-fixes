@@ -107,9 +107,12 @@ def _ces_function(X1, X2, w1, rho):
         if np.any(both_inputs_zero):
             result[both_inputs_zero] = 0.0
         if np.any(X1_zero_only):
-            result[X1_zero_only] = np.power(w2[X1_zero_only], 1 / rho[X1_zero_only]) * X2[X1_zero_only]
+            # rho < 0: X1^rho -> inf, so Y -> 0 (complements); rho > 0: Y = w2^(1/rho) X2
+            result[X1_zero_only] = np.where(rho[X1_zero_only] < 0, 0.0,
+                np.power(w2[X1_zero_only], 1 / rho[X1_zero_only]) * X2[X1_zero_only])
         if np.any(X2_zero_only):
-            result[X2_zero_only] = np.power(w1[X2_zero_only], 1 / rho[X2_zero_only]) * X1[X2_zero_only]
+            result[X2_zero_only] = np.where(rho[X2_zero_only] < 0, 0.0,
+                np.power(w1[X2_zero_only], 1 / rho[X2_zero_only]) * X1[X2_zero_only])
 
         # Standard CES for remaining cases
         standard_ces_mask = (mask & (X1 > 0) & (X2 > 0) & (w1 > 0) & (w2 > 0) &

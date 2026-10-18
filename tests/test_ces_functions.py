@@ -50,10 +50,17 @@ class TestCESFunction:
         assert result == 0.0, f"Expected 0.0, got {result}"
 
     def test_one_zero_input_with_negative_rho(self):
-        """With one zero input and rho<0 (complements), result scaled appropriately."""
+        """With one zero input and rho<0 (complements), the output is zero."""
         result = _ces_function(0.0, 3.0, 0.5, -2.0)
-        # When X1=0 and rho<0, we should get (w2)^(1/rho) * X2
-        expected = (0.5 ** (1/-2.0)) * 3.0
+        # X1^rho -> inf as X1 -> 0+ when rho < 0, so (w1 X1^rho + w2 X2^rho)^(1/rho) -> 0,
+        # matching the limit from a tiny positive input.
+        assert result == 0.0, f"Expected 0.0, got {result}"
+        assert _ces_function(1e-12, 3.0, 0.5, -2.0) < 1e-10
+
+    def test_one_zero_input_with_positive_rho(self):
+        """With one zero input and rho>0 (substitutes), result is w2^(1/rho) * X2."""
+        result = _ces_function(0.0, 3.0, 0.5, 0.5)
+        expected = (0.5 ** (1/0.5)) * 3.0
         assert abs(result - expected) < 1e-6, f"Expected {expected}, got {result}"
 
     def test_symmetry(self):
