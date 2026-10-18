@@ -680,10 +680,16 @@ class ProgressModel:
 
         # The anchor solve targets the PARALLEL multiplier at present_day, which is a
         # derived view of serial_uplift_at_reference_date -- go through the resolver.
-        _swe_target = resolve_swe_multiplier_at_present_day(self.params)
+        # Bind the serial uplift belief at ITS OWN date t* (uplift_reference_date),
+        # on the mapping, rather than at present_day via a back-extrapolation with
+        # the believed doubling time (which this mode treats as only a guess).
+        _t_star = getattr(self.params, 'uplift_reference_date', None)
+        _t_star = float(self.params.present_day) if _t_star is None else float(_t_star)
+        _lower_progress = float(np.interp(_t_star, mapping_times, mapping_progress))
+        _swe_target = float(self.params.serial_uplift_at_reference_date) ** (1.0 / float(self.params.parallel_penalty))
         anchor_aut_frac = solve_lower_anchor_via_automation_model(
             _swe_target,
-            float(present_day_progress),
+            _lower_progress,
             float(present_day_human_labor),
             float(present_day_inference_compute),
             self.params,
@@ -691,7 +697,7 @@ class ProgressModel:
         logger.info(f"calculated anchor automation fraction (via AM solver): {anchor_aut_frac} "
                     f"from swe_multiplier_at_present_day: {_swe_target} and present_day: {float(self.params.present_day)}")
         self.params.automation_anchors = {
-            present_day_progress: anchor_aut_frac,
+            _lower_progress: anchor_aut_frac,
             self.params.progress_at_aa: self.params.automation_fraction_at_coding_automation_anchor
         }
         logger.info(f"Automation anchors: {self.params.automation_anchors}")
